@@ -1,5 +1,5 @@
 #include <iostream>
-#include "MocapApi.h"
+#include "../MocapApi/include/MocapApi.h"
 
 #define ReturnIFError(...) if (mcpError!=MocapApi::Error_None) { \
     LastError = mcpError; \
