@@ -1,7 +1,5 @@
 #include <iostream>
 #include "MocapApi.h"
-#include <unordered_map>
-#include <functional>
 
 #define ReturnIFError(...) if (mcpError!=MocapApi::Error_None) { \
     LastError = mcpError; \
@@ -16,78 +14,79 @@
 }
 
 int main(){
+    
+    // // reset Error
+    // LastError = 0;
+    // ExtraErrorMsg = TEXT("");
     // create application
     MocapApi::MCPApplicationHandle_t application;
     MocapApi::IMCPApplication* mcpApplication = nullptr;
     MocapApi::EMCPError mcpError = MocapApi::MCPGetGenericInterface(MocapApi::IMCPApplication_Version,
         reinterpret_cast<void**>(&mcpApplication));
-    ReturnIFError();
+    // ReturnIFError();
 
     mcpError = mcpApplication->CreateApplication(&application);
-    ReturnIFError();
+    // ReturnIFError();
 
     // Appsettings
     MocapApi::IMCPSettings* mcpSettings = nullptr;
     mcpError = MocapApi::MCPGetGenericInterface(MocapApi::IMCPSettings_Version,
         reinterpret_cast<void**>(&mcpSettings));
-    ReturnIFError();
+    // ReturnIFError();
 
     MocapApi::MCPSettingsHandle_t mcpSettingsHandle = 0;
     mcpError = mcpSettings->CreateSettings(&mcpSettingsHandle);
-    ReturnIFError();
+    // ReturnIFError();
 
     // MocapApi::EMCPBvhData BvhDataFmt = (MocapApi::EMCPBvhData)(AppSettings.bvhDataFormat);
-    BvhDataFmt = MocapApi::BvhDataType_Binary;
-    mcpError = mcpSettings->SetSettingsBvhData(BvhDataFmt, mcpSettingsHandle);
-    ReturnIFError();
+    mcpError = mcpSettings->SetSettingsBvhData(MocapApi::BvhDataType_Binary, mcpSettingsHandle);
+    // ReturnIFError();
 
     // MocapApi::EMCPBvhRotation RotationOrder = (MocapApi::EMCPBvhRotation)(AppSettings.BvhRotation);
-    RotationOrder = MocapApi::BvhRotation_YXZ;
-    mcpError = mcpSettings->SetSettingsBvhRotation(RotationOrder, mcpSettingsHandle);
-    ReturnIFError();
+    mcpError = mcpSettings->SetSettingsBvhRotation(MocapApi::BvhRotation_YXZ, mcpSettingsHandle);
+    // ReturnIFError();
 
     MocapApi::EMCPBvhTransformation EnableTrans = MocapApi::BvhTransformation_Enable;
     mcpError = mcpSettings->SetSettingsBvhTransformation(EnableTrans, mcpSettingsHandle);
-    ReturnIFError();
+    // ReturnIFError();
     //set udp - hardcoded 7001 port
     mcpError = mcpSettings->SetSettingsUDP(7001, mcpSettingsHandle);
     // mcpError = mcpSettings->SetSettingsUDPServer(IPAddress, Port, mcpSettingsHandle);
-    ReturnIFError();
+    // ReturnIFError();
     
     //set settings
     mcpError = mcpApplication->SetApplicationSettings(mcpSettingsHandle, application);
-    ReturnIFError();
+    // ReturnIFError();
     
     //free settings memory
     mcpError = mcpSettings->DestroySettings(mcpSettingsHandle);
-    ReturnIFError();
+    // ReturnIFError();
 
-    AppHandle = application;
-    AppHandleInternal = FString::Printf(TEXT("%lld"), application);
+    // AppHandle = application;
+    // AppHandleInternal = FString::Printf(TEXT("%lld"), application);
 
     //open the application
     mcpError = mcpApplication->OpenApplication(application);
-    ReturnIFError();
+    // ReturnIFError();
     
     //create a command interface
     MocapApi::IMCPCommand* CommandInterface = nullptr;
-    MocapApi::EMCPError mcpError = MocapApi::MCPGetGenericInterface(MocapApi::IMCPCommand_Version,
+    mcpError = MocapApi::MCPGetGenericInterface(MocapApi::IMCPCommand_Version,
         reinterpret_cast<void**>(&CommandInterface));
-    ReturnIFError();
-    MocapApi::MCPCommandHandle_t commandHandle;
+    // ReturnIFError();
+    MocapApi::MCPCommandHandle_t commandHandle = 0;
 
     //send start record command
-    StartRecoredCommand = MocapApi::CommandStartRecored;
-    CommandInterface->CreateCommand(StartRecoredCommand, &commandHandle);
+    CommandInterface->CreateCommand(MocapApi::CommandStartRecored, &commandHandle);
     
     //queue the command
-    mcpError = mcpApplication->QueuedServerCommand(commandHandle, application);
-    ReturnIFError();
+     mcpError = mcpApplication->QueuedServerCommand(commandHandle, application);
+    // ReturnIFError();
 
     //destroy it
     CommandInterface->DestroyCommand(commandHandle);
 
     //close the app
     mcpError = mcpApplication->CloseApplication(application);
-    ReturnIFError();
+    // ReturnIFError();
 }
