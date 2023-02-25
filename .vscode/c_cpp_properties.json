@@ -4,7 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/MocapApi/include"
+                "${workspaceFolder}/MocapApi/include",
+                "${workspaceFolder}/MocapApi/bin/x64"
             ],
             "defines": [
                 "_DEBUG",
