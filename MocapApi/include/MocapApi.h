@@ -284,7 +284,7 @@ namespace MocapApi {
             uint32_t * hour,  uint32_t * minute,uint32_t * second, uint32_t * frame, uint32_t * rate,
             MCPAvatarHandle_t ulAvatarHandle) = 0;
     };
-    static const char * IMCPAvatar_Version = "IMCPAvatar_003";
+    static const char* IMCPAvatar_Version = "IMCPAvatar_003";
 
 	enum EMCPCommand {
 		CommandStartCapture,
@@ -594,7 +594,7 @@ namespace MocapApi {
         virtual EMCPError EnableApplicationCacheEvents(MCPApplicationHandle_t ulApplicationHandle) = 0;
 
         virtual EMCPError DisableApplicationCacheEvents(MCPApplicationHandle_t ulApplicationHandle) = 0;
-
+         
         virtual EMCPError ApplicationCacheEventsIsEnabled(bool * isEnabled, 
             MCPApplicationHandle_t ulApplicationHandle) = 0;
 
